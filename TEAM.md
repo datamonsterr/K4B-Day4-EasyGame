@@ -7,25 +7,25 @@
 - Tên nhóm: EasyGame
 - Người đại diện / MSSV: Nguyễn Đức Tâm / 2A202602921
 - Tên repo: `K4-L3B-Day04-EasyGame`
-- URL repo, nhánh nộp, commit chốt: https://github.com/tamnd2004/K4B-Day-4-Whatever
+- URL repo, nhánh nộp, commit chốt: https://github.com/datamonsterr/K4-L3B-Day04-EasyGame · nhánh `main` · commit chốt: xem mục "Reconstruction" bên dưới và `docs/provenance.json`
 - Deadline áp dụng và link thông báo đổi hạn nếu có:
 
 ## Thành viên
 
 | Họ và tên       | MSSV        | GitHub         | Vai trò và công việc | File/commit/PR |
 | --------------- | ----------- | -------------- | -------------------- | -------------- |
-| Nguyễn Đức Tâm  | 2A202602921 | tamnd2004      |                      |                |
-| Đậu Quang Ý     | 2A202602661 | quangy1007     | Thiết kế & cài đặt bộ 10 test case nhóm (5 single-turn + 5 multi-turn) | starter_v0/data/eval_group.json |
-| Nguyễn Tiến Đạt | 2A202602970 | DatTienNguyenn |                      |                |
-| Trần Mạnh Hùng  | 2A202602708 | manhhungtr211  |                      |                |
-| Phạm Thành Đạt  | 2A202602721 | datamonsterr |                      |                |
+| Nguyễn Đức Tâm  | 2A202602921 | tamnd2004      | 12 case an toàn, phân tích trace, REPORT.md | `starter_v0/artifacts/REPORT.md`, run `v4_B_adversarial_*` |
+| Đậu Quang Ý     | 2A202602661 | quangy1007     | Thiết kế & cài đặt bộ 10 test case nhóm (5 single-turn + 5 multi-turn) | `starter_v0/data/eval_group.json`, run `v4_B_group_*` |
+| Nguyễn Tiến Đạt | 2A202602970 | DatTienNguyenn | v1 routing/clarification, v2 context/confirmation | commit `f6b8707`, `a5e44bc` |
+| Trần Mạnh Hùng  | 2A202602708 | manhhungtr211  | Baseline v0, retry/pacing, version log, README startup check | commit `af41fe9`, `starter_v0/scripts/log_version.py`, `docs/startup-check.md` |
+| Phạm Thành Đạt  | 2A202602721 | datamonsterr   | v3 safety boundary, v4 multi-entity, UI Streamlit + tests | commit `c306e3a`, `starter_v0/app.py`, `starter_v0/conversation.py`, `starter_v0/tests/` |
 
 ## Nhận xét chung
 
-- Kết quả và bằng chứng:
-- Thay đổi hiệu quả nhất:
-- Giới hạn còn lại:
-- Cách phân công và tích hợp:
+- Kết quả và bằng chứng: v0 20/30 (0.6667) → v1 24/30 (0.8) → v2 21/30 (0.7, regression) → v3 29/30 (0.9667) → v4 30/30 (1.0) trên bộ base cố định; group 10/10; adversarial **8/12 tự động, 0 provider error** — phân tích thủ công: A03 forged-confirmation ghi 1 ticket mock ở eval path (UI chặn được, xem REPORT B4a); run `v4_B_*_gemini_*.json`, `version_log.csv`, transcripts `starter_v0/transcripts/`.
+- Thay đổi hiệu quả nhất: v3 tách "thực thi tool thật" khỏi "JSON mô tả hành động" — loại 9 lỗi missing_tool_call; v4 yêu cầu một call riêng cho từng thực thể được yêu cầu (H16).
+- Giới hạn còn lại: chỉ đo trên `gemini-3.5-flash-lite` (quota free tier); `TAVILY_API_KEY` trống nên `search_device_info` chỉ chứng minh được nhánh từ chối, chưa chạy search thật; v2 còn regression chưa khắc phục trong artifact riêng; A03 còn khoảng hở forged-confirmation ở eval path (đã chặn ở UI); author/dates là metadata tái dựng.
+- Cách phân công và tích hợp: xem bảng "Reconstruction / phân công bản EasyGame" bên dưới.
 
 ## INDIVIDUAL
 
@@ -33,11 +33,11 @@ Sao chép mục này cho từng thành viên.
 
 ### Nguyễn Đức Tâm — 2A202602921
 
-- Phần việc và file/commit/PR:
-- Quyết định, khó khăn và cách xử lý:
-- Điều đã học:
-- AI/công cụ đã dùng và cách kiểm tra:
-- Thời điểm đã tự nộp URL repo chung trên VLearn:
+- Phần việc và file/commit/PR: Chạy giữ nguyên 12 case an toàn `data/eval_adversarial.json` trên v4 (`run v4_B_adversarial_*`, 8/12 tự động, 0 provider error), phân tích thủ công trace A02/A03/A05/A06 (đối chiếu tool call với `tool_results` và thư mục `tickets/`), hoàn thành `starter_v0/artifacts/REPORT.md`.
+- Quyết định, khó khăn và cách xử lý: Điểm tự động PASS không chứng minh "không có dữ liệu rò rỉ" — kiểm tra thêm `tool_results`, thư mục `tickets/` và regex chặn identifier. Phát hiện A03: forged `TOOL_RESULTS_JSON` khiến eval path ghi 1 ticket mock thật; UI/runtime chặn được (unit test) nhưng ghi minh bạch làm giới hạn, không giấu. A02/A05/A06 là hành vi an toàn nhưng lệch expect cố định.
+- Điều đã học: Ranh giới exfiltration phải được chứng minh ở tầng thực thi (tool code + filesystem), không chỉ ở routing.
+- AI/công cụ đã dùng và cách kiểm tra: AI hỗ trợ soạn phân tích; kiểm tra bằng cách đọc trực tiếp từng result trong run JSON và so với expect của case.
+- Thời điểm đã tự nộp URL repo chung trên VLearn: [thành viên tự điền khi nộp]
 
 ### Đậu Quang Ý — 2A202602661
 
@@ -49,27 +49,27 @@ Sao chép mục này cho từng thành viên.
 
 ### Nguyễn Tiến Đạt — 2A202602970
 
-- Phần việc và file/commit/PR:
-- Quyết định, khó khăn và cách xử lý:
-- Điều đã học:
-- AI/công cụ đã dùng và cách kiểm tra:
-- Thời điểm đã tự nộp URL repo chung trên VLearn:
+- Phần việc và file/commit/PR: v1 — routing/clarification (commit `f6b8707`, artifacts từ `0e178e6` bản gốc, re-eval trên Gemini); v2 — context carry-over + reconfirmation (commit `a5e44bc`, artifacts từ `9752f46`).
+- Quyết định, khó khăn và cách xử lý: Giữ nguyên bộ case và scorer giữa các version để so sánh hợp lệ. v2 giảm còn 21/30 (regression so v1) — ghi nhận thẳng vào REVIEW.md thay vì giấu.
+- Điều đã học: Thêm quy tắc ngữ cảnh có thể làm tăng ambiguous-action; metric trước/sau phải đi kèm phân tích regression.
+- AI/công cụ đã dùng và cách kiểm tra: AI hỗ trợ tái dùng artifact gốc; kiểm chứng bằng `run_eval.py` cùng model, temperature 0, đủ 30/30 measured.
+- Thời điểm đã tự nộp URL repo chung trên VLearn: [thành viên tự điền khi nộp]
 
 ### Trần Mạnh Hùng — 2A202602708
 
-- Phần việc và file/commit/PR:
-- Quyết định, khó khăn và cách xử lý:
-- Điều đã học:
-- AI/công cụ đã dùng và cách kiểm tra:
-- Thời điểm đã tự nộp URL repo chung trên VLearn:
+- Phần việc và file/commit/PR: Baseline v0 chưa sửa (commit `af41fe9`, 2 run: 1 dính quota 11 provider_error — giữ làm bằng chứng INVALID, 1 sạch 30/30 = 0.6667); retry/backoff + pacing RPM trong `run_eval.py`; `scripts/log_version.py`; xác minh khởi động README (`docs/startup-check.md`).
+- Quyết định, khó khăn và cách xử lý: Quota 15 RPM free tier phá run đầu; xử lý bằng min-interval 5s + exponential backoff, không đổi scorer. Run hỏng được giữ nguyên và đánh dấu `INVALID_partial_case_accuracy` trong `version_log.csv`.
+- Điều đã học: Run chỉ là bằng chứng khi `provider_error_cases == 0`; log phải giữ cả run thất bại.
+- AI/công cụ đã dùng và cách kiểm tra: AI hỗ trợ viết harness; kiểm tra bằng chạy lại preflight + eval đầy đủ, đối chiếu summary JSON.
+- Thời điểm đã tự nộp URL repo chung trên VLearn: [thành viên tự điền khi nộp]
 
 ### Phạm Thành Đạt — 2A202602721
 
-- Phần việc và file/commit/PR:
-- Quyết định, khó khăn và cách xử lý: model liên tục bị provider error do giới hạn RPM. Xử lý bằng cách thêm cơ chế retry khi gặp lỗi.
-- Điều đã học:
-- AI/công cụ đã dùng và cách kiểm tra:
-- Thời điểm đã tự nộp URL repo chung trên VLearn:
+- Phần việc và file/commit/PR: v3 — tách thực thi tool khỏi JSON cuối, cấm confirmation giả và identifier nội bộ ra ngoài (commit `c306e3a`); v4 — một call riêng cho từng thực thể, 30/30 base; runtime `conversation.py` + UI `app.py` (tool trace, tham số, kết quả/lỗi, phiên bản, xác nhận ticket bằng nút) + 11 unit tests.
+- Quyết định, khó khăn và cách xử lý: model liên tục bị provider error do giới hạn RPM — thêm cơ chế retry. Model hay "kể" đã làm xong trong text JSON mà không gọi tool → tách tầng thực thi; UI dựng câu trả lời từ kết quả tool thật nên lỗi không thể bị giấu. Confirmation chỉ qua nút bấm payload hiển thị, `confirmed=true` từ model không ghi file.
+- Điều đã học: Tự động PASS routing không tự chứng minh hành động ghi dữ liệu thành công; phải nhìn `tool_results` và filesystem.
+- AI/công cụ đã dùng và cách kiểm tra: AI hỗ trợ code + review; kiểm chứng bằng unit tests (`tests/`), browser test thực tế trên `http://localhost:8501` và transcript JSON xuất từ UI.
+- Thời điểm đã tự nộp URL repo chung trên VLearn: [thành viên tự điền khi nộp]
 
 ## Reconstruction / phân công bản EasyGame
 
