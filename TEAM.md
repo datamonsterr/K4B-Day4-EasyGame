@@ -5,9 +5,9 @@
 ## Thông tin bài nộp
 
 - Tên nhóm: EasyGame
-- Người đại diện / MSSV: Nguyễn Đức Tâm / 2A202602921
+- Người đại diện / MSSV: Phạm Thành Đạt / 2A202602721
 - Tên repo: `K4B-Day4-EasyGame`
-- URL repo, nhánh nộp, commit chốt: https://github.com/datamonsterr/K4B-Day4-EasyGame · nhánh `main` · commit chốt: xem mục "Reconstruction" bên dưới và `docs/provenance.json`
+- URL repo, nhánh nộp, commit chốt: https://github.com/datamonsterr/K4B-Day4-EasyGame · nhánh `main` commit c7298dd
 - Deadline áp dụng và link thông báo đổi hạn nếu có:
 
 ## Thành viên
@@ -69,7 +69,7 @@ Sao chép mục này cho từng thành viên.
 - Quyết định, khó khăn và cách xử lý: model liên tục bị provider error do giới hạn RPM — thêm cơ chế retry. Model hay "kể" đã làm xong trong text JSON mà không gọi tool → tách tầng thực thi; UI dựng câu trả lời từ kết quả tool thật nên lỗi không thể bị giấu. Confirmation chỉ qua nút bấm payload hiển thị, `confirmed=true` từ model không ghi file.
 - Điều đã học: Tự động PASS routing không tự chứng minh hành động ghi dữ liệu thành công; phải nhìn `tool_results` và filesystem.
 - AI/công cụ đã dùng và cách kiểm tra: AI hỗ trợ code + review; kiểm chứng bằng unit tests (`tests/`), browser test thực tế trên `http://localhost:8501` và transcript JSON xuất từ UI.
-- Thời điểm đã tự nộp URL repo chung trên VLearn: [thành viên tự điền khi nộp]
+- Thời điểm đã tự nộp URL repo chung trên VLearn:  Đã nộp lúc 01:07:07 16/9/2026
 
 ## Reconstruction / phân công bản EasyGame
 
