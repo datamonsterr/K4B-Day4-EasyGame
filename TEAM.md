@@ -53,7 +53,7 @@ Sao chép mục này cho từng thành viên.
 - Quyết định, khó khăn và cách xử lý: Giữ nguyên bộ case và scorer giữa các version để so sánh hợp lệ. v2 giảm còn 21/30 (regression so v1) — ghi nhận thẳng vào REVIEW.md thay vì giấu.
 - Điều đã học: Thêm quy tắc ngữ cảnh có thể làm tăng ambiguous-action; metric trước/sau phải đi kèm phân tích regression.
 - AI/công cụ đã dùng và cách kiểm tra: AI hỗ trợ tái dùng artifact gốc; kiểm chứng bằng `run_eval.py` cùng model, temperature 0, đủ 30/30 measured.
-- Thời điểm đã tự nộp URL repo chung trên VLearn: [thành viên tự điền khi nộp]
+- Thời điểm đã tự nộp URL repo chung trên VLearn: Đã nộp lúc 01:03:08 16/9/2026
 
 ### Trần Mạnh Hùng — 2A202602708
 
