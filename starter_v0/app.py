@@ -67,7 +67,15 @@ def save_chat(chat):
 
 if 'conversation' not in st.session_state:
     st.session_state.conversation = new_conversation()
+if 'doc_panel' not in st.session_state:
+    st.session_state.doc_panel = None
 chat = st.session_state.conversation
+
+doc_open = st.session_state.doc_panel is not None
+if doc_open:
+    chat_col, panel_col = st.columns([4, 1.7])
+else:
+    chat_col, panel_col = st.container(), None
 
 with st.sidebar:
     nav = st.radio('Nội dung', ['💬 Chat', '📊 Runs & evidence'], horizontal=True,
@@ -80,21 +88,65 @@ with st.sidebar:
                        use_container_width=True)
     st.caption('Chỉ dùng dữ liệu giả lập. Tool trace lưu cả lỗi. Ticket được ghi local sau khi bấm xác nhận payload.')
 
+def clarify_options(turn):
+    if turn.get('status') != 'waiting_for_user':
+        return []
+    cl = next((e['result'] for e in reversed(turn.get('tool_events', []))
+               if isinstance(e.get('result'), dict) and e['result'].get('awaiting_user')), None)
+    if not cl:
+        return []
+    if cl.get('response_type') == 'yes_no':
+        return ['Có', 'Không']
+    if cl.get('response_type') == 'choice':
+        return [str(o) for o in (cl.get('options') or [])]
+    return []
+
+
+def render_turn_response(turn):
+    """Display the true ReAct order: thinking -> tool calls -> ... -> final message last."""
+    from conversation import reply_text
+    final = turn.get('assistant_text', '')
+    for rnd in turn.get('rounds', []):
+        if rnd.get('tool_calls'):
+            if rnd.get('model_text'):
+                with st.expander('🤔 Suy luận', expanded=False):
+                    st.markdown(rnd['model_text'])
+            for event in rnd.get('tool_results', []):
+                show_event(event)
+        else:
+            final = reply_text(rnd.get('model_text'))
+    if turn.get('loop_note'):
+        st.caption(turn['loop_note'])
+    if turn.get('error'):
+        st.error(turn['error'])
+    st.markdown(final)
+
+
 if nav == '💬 Chat':
-    chat_area = st.container()
+    chat_area = chat_col
     with chat_area:
         if not chat.transcript['turns']:
             st.markdown(f"<h2 style='text-align:center;margin-top:3rem;font-weight:600'>{GREETING}</h2>", unsafe_allow_html=True)
-        for turn in chat.transcript['turns']:
+        for ti, turn in enumerate(chat.transcript['turns']):
             with st.chat_message('user'):
                 st.write(turn['user'])
             with st.chat_message('assistant'):
-                st.markdown(turn.get('assistant_text', ''))
-                if turn.get('error'):
-                    st.error(turn['error'])
-                for event in turn.get('tool_events', []):
-                    show_event(event)
+                render_turn_response(turn)
+                for di, doc in enumerate(turn.get('docs', [])):
+                    key = f"doc_{ti}_{di}_{doc['file']}_{doc['section'][:24]}"
+                    if st.button(f"📄 {doc['title']}", key=key, help=doc['file'], use_container_width=True):
+                        if st.session_state.doc_panel and st.session_state.doc_panel.get('key') == key:
+                            st.session_state.doc_panel = None
+                        else:
+                            st.session_state.doc_panel = {**doc, 'key': key}
+                        st.rerun()
                 st.caption(f"{turn['status']} · {turn.get('ended_at', '')}")
+        if chat.transcript['turns']:
+            last_turn = chat.transcript['turns'][-1]
+            for oi, option in enumerate(clarify_options(last_turn)):
+                if st.button(f"🔘 {option}", key=f"opt_{len(chat.transcript['turns'])}_{oi}", use_container_width=True):
+                    st.session_state.pending_input = option
+                    st.rerun()
         if chat.pending_ticket is not None:
             st.warning('Rà soát ticket. Một tin nhắn mới sẽ hủy payload đang chờ này.')
             st.json(chat.pending_ticket)
@@ -111,19 +163,33 @@ if nav == '💬 Chat':
                 st.rerun()
         st.markdown('<div id="chat-anchor"></div>', unsafe_allow_html=True)
 
-    user_text = st.chat_input('Nhập yêu cầu IT Helpdesk…', submit_mode='disable')
+    if panel_col is not None and st.session_state.doc_panel:
+        doc = st.session_state.doc_panel
+        with panel_col:
+            st.markdown(f"### 📄 {doc['title']}")
+            st.caption(doc['file'] + (f" · {doc['section']}" if doc.get('section') else ''))
+            st.markdown(doc['content'] or '_Nội dung trống._')
+            if st.button('Đóng tài liệu', use_container_width=True):
+                st.session_state.doc_panel = None
+                st.rerun()
+
+    user_text = st.chat_input('Nhập yêu cầu IT Helpdesk…', submit_mode='disable') or st.session_state.pop('pending_input', None)
     if user_text:
-        with st.chat_message('user'):
-            st.write(user_text)
-        with st.chat_message('assistant'):
-            with st.status('Đang suy nghĩ · chọn công cụ với Gemini…', expanded=True) as status:
-                st.write('Đang xử lý yêu cầu và kiểm tra kết quả công cụ.')
-                turn = chat.respond(user_text)
-                for event in turn.get('tool_events', []):
-                    show_event(event)
-                failed = turn['status'] in {'tool_error', 'provider_error'}
-                status.update(label='Có lỗi — xem trace' if failed else 'Đã xử lý', state='error' if failed else 'complete')
-            st.markdown(turn['assistant_text'])
+        chat_col2 = st.columns([4, 1.7])[0] if doc_open else chat_col
+        with chat_col2:
+            with st.chat_message('user'):
+                st.write(user_text)
+            with st.chat_message('assistant'):
+                with st.spinner('Đang xử lý…'):
+                    turn = chat.respond(user_text)
+                render_turn_response(turn)
+                for di, doc in enumerate(turn.get('docs', [])):
+                    key = f"newdoc_{di}_{doc['file']}_{doc['section'][:24]}"
+                    if st.button(f"📄 {doc['title']}", key=key, help=doc['file'], use_container_width=True):
+                        st.session_state.doc_panel = {**doc, 'key': key}
+                        st.rerun()
+        save_chat(chat)
+        st.rerun()
         save_chat(chat)
         st.rerun()
 

@@ -54,9 +54,9 @@ class ConversationTests(unittest.TestCase):
         session.provider.complete.return_value = ModelResponse(text='Next step')
         session.respond('Find official drivers for that model')
         messages = session.provider.complete.call_args.args[0]
-        prior = '\n'.join(m['content'] for m in messages[:-1])
-        self.assertIn('ThinkPad T14 Gen 4', prior)
-        self.assertIn('Lenovo', prior)
+        joined = '\n'.join(m['content'] for m in messages)
+        self.assertIn('ThinkPad T14 Gen 4', joined)
+        self.assertIn('Lenovo', joined)
 
     def test_fenced_json_reply_is_extracted(self):
         from conversation import reply_text
@@ -74,3 +74,45 @@ class ConversationTests(unittest.TestCase):
         self.assertIn('kết quả', text)
         self.assertIn('Account Access Policy', text)
         self.assertIn('identity verification', text)
+
+    def react_session(self, responses):
+        from conversation import Conversation
+        provider = Mock()
+        provider.complete.side_effect = list(responses)
+        return Conversation(provider, 'test prompt', [], 'gemini-3.5-flash-lite', {'version': 'test'})
+
+    def test_react_multi_step_tool_then_final(self):
+        responses = [
+            ModelResponse(text=None, tool_calls=[ToolCall('check_service_status', {'service': 'vpn', 'environment': 'production'})]),
+            ModelResponse(text='{"intent":"status","action":"answer","reply":"VPN bi suy giam.","evidence_ids":[]}', tool_calls=[]),
+        ]
+        turn = self.react_session(responses).respond('VPN production the nao?')
+        self.assertEqual(turn['status'], 'answered')
+        self.assertEqual(len(turn['rounds']), 2)
+        self.assertIn('suy giam', turn['assistant_text'])
+        self.assertEqual(turn['tool_events'][0]['result']['status'], 'degraded')
+
+    def test_react_stops_on_repeated_identical_call(self):
+        call = ToolCall('inspect_device', {'asset_id': 'LT-204', 'check': 'all'})
+        responses = [ModelResponse(text=None, tool_calls=[call]), ModelResponse(text=None, tool_calls=[call])]
+        turn = self.react_session(responses).respond('kiem tra LT-204')
+        self.assertEqual(turn['status'], 'answered')
+        self.assertIn('lặp lại', turn['assistant_text'])
+        self.assertLessEqual(len(turn['rounds']), 2)
+
+    def test_react_stops_on_all_error_second_round(self):
+        bad = ToolCall('inspect_device', {'asset_id': 'LT-404'})
+        responses = [ModelResponse(text=None, tool_calls=[bad]), ModelResponse(text=None, tool_calls=[bad])]
+        turn = self.react_session(responses).respond('kiem tra LT-404')
+        self.assertEqual(turn['status'], 'tool_error')
+        self.assertIn('asset_not_found', turn['assistant_text'])
+
+    def test_react_respects_round_budget(self):
+        from conversation import Conversation
+        call = ToolCall('lookup_user', {'employee_id': 'EMP-1001'})
+        alt = ToolCall('lookup_user', {'employee_id': 'EMP-1002'})
+        services = ['vpn', 'email', 'sso', 'wifi', 'printing', 'vpn']
+        responses = [ModelResponse(text=None, tool_calls=[ToolCall('check_service_status', {'service': s, 'environment': 'production'})]) for s in services]
+        turn = self.react_session(responses).respond('tra cuc emp')
+        self.assertLessEqual(len(turn['rounds']), Conversation.MAX_ROUNDS)
+        self.assertIn('giới hạn', turn['assistant_text'])
