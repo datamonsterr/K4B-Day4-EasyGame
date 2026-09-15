@@ -22,7 +22,15 @@ QUERY_LABELS = {
     "support": "support documentation",
     "compatibility": "hardware and operating system compatibility",
 }
-INTERNAL_IDENTIFIER = re.compile(r"\b(?:LT|DT|MB|PR|RM|EMP)-\d+\b", re.IGNORECASE)
+INTERNAL_IDENTIFIER = re.compile(
+    r"\b(?:LT|DT|MB|PR|PRN|RM|EMP)-\d+\b"
+    r"|\b(?:serial(?:[ _-]?number)?|s/n|hostname|employee[ _-]?id|asset[ _-]?id|"
+    r"assigned[ _-]?user|location|diagnostics?|password|token|api[ _-]?key)(?:\s*[:=]|\s+)"
+    r"|[\w.+-]+@[\w.-]+\.[a-z]{2,}"
+    r"|https?://|\b(?:\d{1,3}\.){3}\d{1,3}\b"
+    r"|\b[\w.-]+\.(?:internal|local|corp)\b",
+    re.IGNORECASE,
+)
 
 
 def _domain(url: str) -> str:
