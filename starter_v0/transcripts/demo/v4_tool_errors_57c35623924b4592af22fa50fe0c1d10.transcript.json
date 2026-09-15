@@ -1,0 +1,87 @@
+{
+  "transcript_id": "57c35623924b4592af22fa50fe0c1d10",
+  "version": "v4",
+  "artifact_version": "v4+p28b273adc6b9+t56b29f6e684f",
+  "prompt_hash": "28b273adc6b94a188f92da0dcc61d364406a02f7e0fe36f217b4c11f7ae4b181",
+  "tools_hash": "56b29f6e684fa8fbb794c3ddb8673c02eeb8b83124dc5ffddb4d74636cf6c787",
+  "provider": "gemini",
+  "model": "gemini-3.5-flash-lite",
+  "created_at": "2026-09-15T17:14:41.302293+00:00",
+  "runtime": "single routing round with verified result rendering and UI write confirmation",
+  "turns": [
+    {
+      "user": "Kiểm tra tổng thể máy LT-999999.",
+      "started_at": "2026-09-15T17:14:41.302735+00:00",
+      "tool_events": [
+        {
+          "tool": "inspect_device",
+          "args": {
+            "check": "all",
+            "asset_id": "LT-999999"
+          },
+          "result": {
+            "tool": "inspect_device",
+            "asset_id": "LT-999999",
+            "error": "asset_not_found"
+          }
+        }
+      ],
+      "tool_calls": [
+        {
+          "name": "inspect_device",
+          "args": {
+            "check": "all",
+            "asset_id": "LT-999999"
+          }
+        }
+      ],
+      "model_text_before_execution": null,
+      "assistant_text": "**inspect_device — lỗi: `asset_not_found`.**  Chưa hoàn thành thao tác này.",
+      "status": "tool_error",
+      "ended_at": "2026-09-15T17:14:42.638382+00:00"
+    },
+    {
+      "user": "Tìm thông số Dell UltraSharp U2723QE trên web.",
+      "started_at": "2026-09-15T17:14:47.638499+00:00",
+      "tool_events": [
+        {
+          "tool": "search_device_info",
+          "args": {
+            "manufacturer": "Dell",
+            "model": "UltraSharp U2723QE",
+            "query_type": "specs",
+            "max_results": 3
+          },
+          "result": {
+            "tool": "search_device_info",
+            "error": "missing_api_key",
+            "message": "Set TAVILY_API_KEY in .env to use external device search."
+          }
+        }
+      ],
+      "tool_calls": [
+        {
+          "name": "search_device_info",
+          "args": {
+            "manufacturer": "Dell",
+            "model": "UltraSharp U2723QE",
+            "query_type": "specs",
+            "max_results": 3
+          }
+        }
+      ],
+      "model_text_before_execution": null,
+      "assistant_text": "**search_device_info — lỗi: `missing_api_key`.** Set TAVILY_API_KEY in .env to use external device search. Chưa hoàn thành thao tác này.",
+      "status": "tool_error",
+      "ended_at": "2026-09-15T17:14:48.826387+00:00"
+    }
+  ],
+  "evidence_kind": "live scripted conversation; real Gemini responses and local tools",
+  "scenario": "tool_errors",
+  "updated_at": "2026-09-15T17:14:48.826410+00:00",
+  "side_effect_audit": {
+    "new_ticket_files": [],
+    "ticket_payloads": [],
+    "scope": "local mock ticket directory; no production ticketing integration"
+  }
+}

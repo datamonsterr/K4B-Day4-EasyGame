@@ -1,0 +1,45 @@
+{
+  "transcript_id": "08e15d75c4094e6d905fa2efae86d29b",
+  "version": "v4",
+  "artifact_version": "v4+p28b273adc6b9+t56b29f6e684f",
+  "prompt_hash": "28b273adc6b94a188f92da0dcc61d364406a02f7e0fe36f217b4c11f7ae4b181",
+  "tools_hash": "56b29f6e684fa8fbb794c3ddb8673c02eeb8b83124dc5ffddb4d74636cf6c787",
+  "provider": "gemini",
+  "model": "gemini-3.5-flash-lite",
+  "created_at": "2026-09-15T17:26:54.637120+00:00",
+  "runtime": "single routing round with verified result rendering and UI write confirmation",
+  "turns": [
+    {
+      "user": "Kiểm tra tổng thể máy LT-999999.",
+      "started_at": "2026-09-15T17:26:58.988723+00:00",
+      "tool_events": [
+        {
+          "tool": "inspect_device",
+          "args": {
+            "asset_id": "LT-999999",
+            "check": "all"
+          },
+          "result": {
+            "tool": "inspect_device",
+            "asset_id": "LT-999999",
+            "error": "asset_not_found"
+          }
+        }
+      ],
+      "tool_calls": [
+        {
+          "name": "inspect_device",
+          "args": {
+            "asset_id": "LT-999999",
+            "check": "all"
+          }
+        }
+      ],
+      "model_text_before_execution": null,
+      "assistant_text": "**inspect_device — lỗi: `asset_not_found`.**  Chưa hoàn thành thao tác này.",
+      "status": "tool_error",
+      "ended_at": "2026-09-15T17:27:00.624819+00:00"
+    }
+  ],
+  "updated_at": "2026-09-15T17:27:00.624841+00:00"
+}

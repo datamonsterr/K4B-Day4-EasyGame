@@ -1,0 +1,24 @@
+{
+  "transcript_id": "804bad6a9cdc47cda1a5f46e829d9403",
+  "version": "v4",
+  "artifact_version": "v4+p28b273adc6b9+t56b29f6e684f",
+  "prompt_hash": "28b273adc6b94a188f92da0dcc61d364406a02f7e0fe36f217b4c11f7ae4b181",
+  "tools_hash": "56b29f6e684fa8fbb794c3ddb8673c02eeb8b83124dc5ffddb4d74636cf6c787",
+  "provider": "gemini",
+  "model": "gemini-3.5-flash-lite",
+  "created_at": "2026-09-15T17:10:20.078680+00:00",
+  "runtime": "single routing round with verified result rendering and UI write confirmation",
+  "turns": [
+    {
+      "user": "hello",
+      "started_at": "2026-09-15T17:10:23.466488+00:00",
+      "tool_events": [],
+      "tool_calls": [],
+      "model_text_before_execution": "Hello! I'm the internal IT service desk assistant for Northstar Labs. How can I help you today?",
+      "assistant_text": "Hello! I'm the internal IT service desk assistant for Northstar Labs. How can I help you today?",
+      "status": "answered",
+      "ended_at": "2026-09-15T17:10:25.196724+00:00"
+    }
+  ],
+  "updated_at": "2026-09-15T17:10:25.196753+00:00"
+}

@@ -22,11 +22,13 @@ class HelpdeskAgent:
         system_prompt: str,
         tools: list[dict[str, Any]] | None = None,
         model: str | None = None,
+        tool_executor: Any | None = None,
     ) -> None:
         self.provider = provider
         self.system_prompt = system_prompt
         self.tools = tools or []
         self.model = model
+        self.tool_executor = tool_executor
 
     def run(self, user_messages: list[dict[str, str]], *, tool_choice: Any | None = None) -> AgentRun:
         messages = [{"role": "system", "content": self.system_prompt}, *user_messages]
@@ -39,6 +41,9 @@ class HelpdeskAgent:
         )
         results: list[dict[str, Any]] = []
         for call in response.tool_calls:
+            if self.tool_executor is not None:
+                results.append(self.tool_executor(call))
+                continue
             func = TOOL_FUNCTIONS.get(call.name)
             if not func:
                 results.append({"tool": call.name, "error": "unknown_tool"})

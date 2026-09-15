@@ -1,0 +1,34 @@
+{
+  "transcript_id": "eb91c870afc64cd69db55f8dfd9d44e0",
+  "version": "v4",
+  "artifact_version": "v4+p28b273adc6b9+t56b29f6e684f",
+  "prompt_hash": "28b273adc6b94a188f92da0dcc61d364406a02f7e0fe36f217b4c11f7ae4b181",
+  "tools_hash": "56b29f6e684fa8fbb794c3ddb8673c02eeb8b83124dc5ffddb4d74636cf6c787",
+  "provider": "gemini",
+  "model": "gemini-3.5-flash-lite",
+  "created_at": "2026-09-15T17:15:30.605774+00:00",
+  "runtime": "single routing round with verified result rendering and UI write confirmation",
+  "turns": [
+    {
+      "user": "hehe",
+      "started_at": "2026-09-15T17:15:49.863632+00:00",
+      "tool_events": [],
+      "tool_calls": [],
+      "model_text_before_execution": "Xin chào! Tôi là trợ lý hỗ trợ CNTT tại Northstar Labs. Tôi có thể giúp gì cho bạn về các vấn đề như tài khoản, thiết bị, VPN, máy in, email, chính sách công ty hoặc tra cứu kiến thức CNTT?",
+      "assistant_text": "Xin chào! Tôi là trợ lý hỗ trợ CNTT tại Northstar Labs. Tôi có thể giúp gì cho bạn về các vấn đề như tài khoản, thiết bị, VPN, máy in, email, chính sách công ty hoặc tra cứu kiến thức CNTT?",
+      "status": "answered",
+      "ended_at": "2026-09-15T17:15:51.124664+00:00"
+    },
+    {
+      "user": "hehe",
+      "started_at": "2026-09-15T17:16:09.061129+00:00",
+      "tool_events": [],
+      "tool_calls": [],
+      "model_text_before_execution": "Xin chào! Tôi có thể giúp gì cho bạn hôm nay liên quan đến các dịch vụ CNTT của Northstar Labs (như VPN, email, máy in, tài khoản, thiết bị, v.v.)?",
+      "assistant_text": "Xin chào! Tôi có thể giúp gì cho bạn hôm nay liên quan đến các dịch vụ CNTT của Northstar Labs (như VPN, email, máy in, tài khoản, thiết bị, v.v.)?",
+      "status": "answered",
+      "ended_at": "2026-09-15T17:16:10.385316+00:00"
+    }
+  ],
+  "updated_at": "2026-09-15T17:16:10.385335+00:00"
+}

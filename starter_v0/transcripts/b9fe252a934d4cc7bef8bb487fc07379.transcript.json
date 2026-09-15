@@ -1,0 +1,54 @@
+{
+  "transcript_id": "b9fe252a934d4cc7bef8bb487fc07379",
+  "version": "v4",
+  "artifact_version": "v4+p28b273adc6b9+t56b29f6e684f",
+  "prompt_hash": "28b273adc6b94a188f92da0dcc61d364406a02f7e0fe36f217b4c11f7ae4b181",
+  "tools_hash": "56b29f6e684fa8fbb794c3ddb8673c02eeb8b83124dc5ffddb4d74636cf6c787",
+  "provider": "gemini",
+  "model": "gemini-3.5-flash-lite",
+  "created_at": "2026-09-15T17:06:05.967628+00:00",
+  "runtime": "single routing round with verified result rendering and UI write confirmation",
+  "turns": [
+    {
+      "user": "hello",
+      "started_at": "2026-09-15T17:06:11.861938+00:00",
+      "tool_events": [],
+      "tool_calls": [],
+      "status": "provider_error",
+      "error": "ClientError: 429 RESOURCE_EXHAUSTED. {'error': {'code': 429, 'message': 'You exceeded your current quota, please check your plan and billing details. For more information on this error, head to: https://ai.google.dev/gemini-api/docs/rate-limits. To monitor your current usage, head to: https://ai.dev/rate-limit. \\n* Quota exceeded for metric: generativelanguage.googleapis.com/generate_content_free_tier_requests, limit: 500, model: gemini-3.5-flash-lite\\nPlease retry in 47.720270124s.', 'status': 'RESOURCE_EXHAUSTED', 'details': [{'@type': 'type.googleapis.com/google.rpc.Help', 'links': [{'description': 'Learn more about Gemini API quotas', 'url': 'https://ai.google.dev/gemini-api/docs/rate-limits'}]}, {'@type': 'type.googleapis.com/google.rpc.QuotaFailure', 'violations': [{'quotaMetric': 'generativelanguage.googleapis.com/generate_content_free_tier_requests', 'quotaId': 'GenerateRequestsPerDayPerProjectPerModel-FreeTier', 'quotaDimensions': {'model': 'gemini-3.5-flash-lite', 'location': 'global'}, 'quotaValue': '500'}]}, {'@type': 'type.googleapis.com/google.rpc.RetryInfo', 'retryDelay': '47s'}]}}",
+      "assistant_text": "Gemini chưa trả lời được. Không xác nhận hoàn thành; hãy thử lại.",
+      "ended_at": "2026-09-15T17:06:12.315174+00:00"
+    },
+    {
+      "user": "hello",
+      "started_at": "2026-09-15T17:06:14.715377+00:00",
+      "tool_events": [],
+      "tool_calls": [],
+      "status": "provider_error",
+      "error": "ClientError: 429 RESOURCE_EXHAUSTED. {'error': {'code': 429, 'message': 'You exceeded your current quota, please check your plan and billing details. For more information on this error, head to: https://ai.google.dev/gemini-api/docs/rate-limits. To monitor your current usage, head to: https://ai.dev/rate-limit. \\n* Quota exceeded for metric: generativelanguage.googleapis.com/generate_content_free_tier_requests, limit: 500, model: gemini-3.5-flash-lite\\nPlease retry in 44.824247278s.', 'status': 'RESOURCE_EXHAUSTED', 'details': [{'@type': 'type.googleapis.com/google.rpc.Help', 'links': [{'description': 'Learn more about Gemini API quotas', 'url': 'https://ai.google.dev/gemini-api/docs/rate-limits'}]}, {'@type': 'type.googleapis.com/google.rpc.QuotaFailure', 'violations': [{'quotaMetric': 'generativelanguage.googleapis.com/generate_content_free_tier_requests', 'quotaId': 'GenerateRequestsPerDayPerProjectPerModel-FreeTier', 'quotaDimensions': {'location': 'global', 'model': 'gemini-3.5-flash-lite'}, 'quotaValue': '500'}]}, {'@type': 'type.googleapis.com/google.rpc.RetryInfo', 'retryDelay': '44s'}]}}",
+      "assistant_text": "Gemini chưa trả lời được. Không xác nhận hoàn thành; hãy thử lại.",
+      "ended_at": "2026-09-15T17:06:15.201534+00:00"
+    },
+    {
+      "user": "hello",
+      "started_at": "2026-09-15T17:06:21.057019+00:00",
+      "tool_events": [],
+      "tool_calls": [],
+      "status": "provider_error",
+      "error": "ClientError: 429 RESOURCE_EXHAUSTED. {'error': {'code': 429, 'message': 'You exceeded your current quota, please check your plan and billing details. For more information on this error, head to: https://ai.google.dev/gemini-api/docs/rate-limits. To monitor your current usage, head to: https://ai.dev/rate-limit. \\n* Quota exceeded for metric: generativelanguage.googleapis.com/generate_content_free_tier_requests, limit: 500, model: gemini-3.5-flash-lite\\nPlease retry in 38.53699411s.', 'status': 'RESOURCE_EXHAUSTED', 'details': [{'@type': 'type.googleapis.com/google.rpc.Help', 'links': [{'description': 'Learn more about Gemini API quotas', 'url': 'https://ai.google.dev/gemini-api/docs/rate-limits'}]}, {'@type': 'type.googleapis.com/google.rpc.QuotaFailure', 'violations': [{'quotaMetric': 'generativelanguage.googleapis.com/generate_content_free_tier_requests', 'quotaId': 'GenerateRequestsPerDayPerProjectPerModel-FreeTier', 'quotaDimensions': {'location': 'global', 'model': 'gemini-3.5-flash-lite'}, 'quotaValue': '500'}]}, {'@type': 'type.googleapis.com/google.rpc.RetryInfo', 'retryDelay': '38s'}]}}",
+      "assistant_text": "Gemini chưa trả lời được. Không xác nhận hoàn thành; hãy thử lại.",
+      "ended_at": "2026-09-15T17:06:21.490883+00:00"
+    },
+    {
+      "user": "hello",
+      "started_at": "2026-09-15T17:06:25.724019+00:00",
+      "tool_events": [],
+      "tool_calls": [],
+      "status": "provider_error",
+      "error": "ClientError: 429 RESOURCE_EXHAUSTED. {'error': {'code': 429, 'message': 'You exceeded your current quota, please check your plan and billing details. For more information on this error, head to: https://ai.google.dev/gemini-api/docs/rate-limits. To monitor your current usage, head to: https://ai.dev/rate-limit. \\n* Quota exceeded for metric: generativelanguage.googleapis.com/generate_content_free_tier_requests, limit: 500, model: gemini-3.5-flash-lite\\nPlease retry in 33.888281064s.', 'status': 'RESOURCE_EXHAUSTED', 'details': [{'@type': 'type.googleapis.com/google.rpc.Help', 'links': [{'description': 'Learn more about Gemini API quotas', 'url': 'https://ai.google.dev/gemini-api/docs/rate-limits'}]}, {'@type': 'type.googleapis.com/google.rpc.QuotaFailure', 'violations': [{'quotaMetric': 'generativelanguage.googleapis.com/generate_content_free_tier_requests', 'quotaId': 'GenerateRequestsPerDayPerProjectPerModel-FreeTier', 'quotaDimensions': {'location': 'global', 'model': 'gemini-3.5-flash-lite'}, 'quotaValue': '500'}]}, {'@type': 'type.googleapis.com/google.rpc.RetryInfo', 'retryDelay': '33s'}]}}",
+      "assistant_text": "Gemini chưa trả lời được. Không xác nhận hoàn thành; hãy thử lại.",
+      "ended_at": "2026-09-15T17:06:26.146931+00:00"
+    }
+  ],
+  "updated_at": "2026-09-15T17:06:26.146953+00:00"
+}

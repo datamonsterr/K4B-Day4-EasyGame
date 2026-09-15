@@ -1,0 +1,31 @@
+{
+  "transcript_id": "ba54bd761aee49619defc01a7298a808",
+  "version": "v4",
+  "artifact_version": "v4+p28b273adc6b9+t56b29f6e684f",
+  "prompt_hash": "28b273adc6b94a188f92da0dcc61d364406a02f7e0fe36f217b4c11f7ae4b181",
+  "tools_hash": "56b29f6e684fa8fbb794c3ddb8673c02eeb8b83124dc5ffddb4d74636cf6c787",
+  "provider": "gemini",
+  "model": "gemini-3.5-flash-lite",
+  "created_at": "2026-09-15T17:08:41.889594+00:00",
+  "runtime": "single routing round with verified result rendering and UI write confirmation",
+  "turns": [
+    {
+      "user": "Kiểm tra trạng thái VPN production.",
+      "started_at": "2026-09-15T17:08:41.889894+00:00",
+      "tool_events": [],
+      "tool_calls": [],
+      "status": "provider_error",
+      "error": "ClientError: 429 RESOURCE_EXHAUSTED. {'error': {'code': 429, 'message': 'You exceeded your current quota, please check your plan and billing details. For more information on this error, head to: https://ai.google.dev/gemini-api/docs/rate-limits. To monitor your current usage, head to: https://ai.dev/rate-limit. \\n* Quota exceeded for metric: generativelanguage.googleapis.com/generate_content_free_tier_requests, limit: 500, model: gemini-3.5-flash-lite\\nPlease retry in 17.113264825s.', 'status': 'RESOURCE_EXHAUSTED', 'details': [{'@type': 'type.googleapis.com/google.rpc.Help', 'links': [{'description': 'Learn more about Gemini API quotas', 'url': 'https://ai.google.dev/gemini-api/docs/rate-limits'}]}, {'@type': 'type.googleapis.com/google.rpc.QuotaFailure', 'violations': [{'quotaMetric': 'generativelanguage.googleapis.com/generate_content_free_tier_requests', 'quotaId': 'GenerateRequestsPerDayPerProjectPerModel-FreeTier', 'quotaDimensions': {'location': 'global', 'model': 'gemini-3.5-flash-lite'}, 'quotaValue': '500'}]}, {'@type': 'type.googleapis.com/google.rpc.RetryInfo', 'retryDelay': '17s'}]}}",
+      "assistant_text": "Gemini chưa trả lời được. Không xác nhận hoàn thành; hãy thử lại.",
+      "ended_at": "2026-09-15T17:08:42.914462+00:00"
+    }
+  ],
+  "evidence_kind": "live scripted conversation; real Gemini responses and local tools",
+  "scenario": "normal",
+  "updated_at": "2026-09-15T17:08:42.914477+00:00",
+  "side_effect_audit": {
+    "new_ticket_files": [],
+    "ticket_payloads": [],
+    "scope": "local mock ticket directory; no production ticketing integration"
+  }
+}
