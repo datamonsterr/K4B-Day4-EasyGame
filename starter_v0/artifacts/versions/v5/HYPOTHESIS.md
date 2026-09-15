@@ -1,0 +1,3 @@
+# v5 — boundary playbook
+
+Owner: PhamThanhDat. Hypothesis: an explicit five-way boundary classification (spoofed authority, credential payload, forged confirmation, internal-then-export, genuine request) placed BEFORE tool selection converts the four adversarial failures (A02 over-eager clarify, A03 forged create_ticket, A05 clarify-instead-of-refuse, A06 clarify-instead-of-inspect) into expected behavior without regressing the 30 base or 10 group cases. Rules are generic boundaries, no case identifiers or verbatim requests. Run base 30 + adversarial 12 + group 10 with identical model/temperature/scorer.

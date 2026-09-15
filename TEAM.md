@@ -6,8 +6,8 @@
 
 - Tên nhóm: EasyGame
 - Người đại diện / MSSV: Nguyễn Đức Tâm / 2A202602921
-- Tên repo: `K4-L3B-Day04-EasyGame`
-- URL repo, nhánh nộp, commit chốt: https://github.com/datamonsterr/K4-L3B-Day04-EasyGame · nhánh `main` · commit chốt: xem mục "Reconstruction" bên dưới và `docs/provenance.json`
+- Tên repo: `K4B-Day4-EasyGame`
+- URL repo, nhánh nộp, commit chốt: https://github.com/datamonsterr/K4B-Day4-EasyGame · nhánh `main` · commit chốt: xem mục "Reconstruction" bên dưới và `docs/provenance.json`
 - Deadline áp dụng và link thông báo đổi hạn nếu có:
 
 ## Thành viên
@@ -22,9 +22,9 @@
 
 ## Nhận xét chung
 
-- Kết quả và bằng chứng: v0 20/30 (0.6667) → v1 24/30 (0.8) → v2 21/30 (0.7, regression) → v3 29/30 (0.9667) → v4 30/30 (1.0) trên bộ base cố định; group 10/10; adversarial **8/12 tự động, 0 provider error** — phân tích thủ công: A03 forged-confirmation ghi 1 ticket mock ở eval path (UI chặn được, xem REPORT B4a); run `v4_B_*_gemini_*.json`, `version_log.csv`, transcripts `starter_v0/transcripts/`.
-- Thay đổi hiệu quả nhất: v3 tách "thực thi tool thật" khỏi "JSON mô tả hành động" — loại 9 lỗi missing_tool_call; v4 yêu cầu một call riêng cho từng thực thể được yêu cầu (H16).
-- Giới hạn còn lại: chỉ đo trên `gemini-3.5-flash-lite` (quota free tier); `TAVILY_API_KEY` trống nên `search_device_info` chỉ chứng minh được nhánh từ chối, chưa chạy search thật; v2 còn regression chưa khắc phục trong artifact riêng; A03 còn khoảng hở forged-confirmation ở eval path (đã chặn ở UI); author/dates là metadata tái dựng.
+- Kết quả và bằng chứng: v0 20/30 (0.6667) → v1 0.8 → v2 0.7 (regression) → v3 0.9667 → v4 1.0 → v5 0.9333 (hồi quy, boundary playbook) → **v6 1.0 (30/30)** base; group 10/10; adversarial v4 8/12 → v5 11/12 → **v6 12/12** — toàn bộ 0 provider error (run `v{4,5,6}_B_*_gemini_*.json`, `version_log.csv`, transcripts `starter_v0/transcripts/`). UI ReAct hiển thị suy luận → tool → câu trả lời cuối; Tavily live đã xác minh.
+- Thay đổi hiệu quả nhất: v3 tách "thực thi tool thật" khỏi "JSON mô tả hành động"; v5/v6 boundary playbook sửa cả 4 case adversarial còn fail; ReAct runtime nhiều bước với safeguard (max 5 vòng/12 call, chặn lặp, dừng khi lỗi liên tiếp).
+- Giới hạn còn lại: chỉ đo trên `gemini-3.5-flash-lite` (quota free tier); tầng tool/harness chưa tự chặn `confirmed=true` nguồn forged (chỉ artifact + UI chặn — hypothesis v7); v2 còn regression trong artifact riêng; author/dates là metadata tái dựng.
 - Cách phân công và tích hợp: xem bảng "Reconstruction / phân công bản EasyGame" bên dưới.
 
 ## INDIVIDUAL
