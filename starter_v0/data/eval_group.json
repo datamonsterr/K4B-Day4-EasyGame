@@ -1,7 +1,217 @@
 {
   "dataset_id": "day04_v3_helpdesk_group",
   "dataset_role": "group",
-  "description": "Template intentionally left empty. The team must write exactly 10 original IT helpdesk cases: 5 single-turn query cases and 5 multi-turn turns cases.",
+  "description": "Team-authored evaluation cases for IT Helpdesk Agent: 5 single-turn query cases and 5 multi-turn turns cases.",
   "allowed_failure_types": ["wrong_tool", "wrong_arg_value", "wrong_boundary", "unnecessary_tool", "out_of_scope", "missing_info"],
-  "cases": []
+  "cases": [
+    {
+      "id": "G01_lookup_new_employee",
+      "phase": "B",
+      "suite": "group",
+      "query": "Tra cứu thông tin tài khoản và thiết bị của nhân viên mới EMP-2045.",
+      "failure_type": "wrong_tool",
+      "expect": {
+        "tool_calls": [
+          {
+            "name": "lookup_user",
+            "args": {"employee_id": "EMP-2045"}
+          }
+        ]
+      },
+      "metadata": {
+        "skill": "user_directory",
+        "difficulty": "easy",
+        "what_it_tests": "Yêu cầu tra cứu nhân viên phải định tuyến vào lookup_user với đúng employee_id."
+      }
+    },
+    {
+      "id": "G02_inspect_printer_network",
+      "phase": "B",
+      "suite": "group",
+      "query": "Kiểm tra kết nối mạng của máy in PRN-102 tại văn phòng.",
+      "failure_type": "wrong_arg_value",
+      "expect": {
+        "tool_calls": [
+          {
+            "name": "inspect_device",
+            "args": {"asset_id": "PRN-102", "check": "network"}
+          }
+        ]
+      },
+      "metadata": {
+        "skill": "device_network_check",
+        "difficulty": "medium",
+        "what_it_tests": "Trích xuất đúng asset_id PRN-102 và check=network cho thiết bị máy in."
+      }
+    },
+    {
+      "id": "G03_kb_wifi_guest",
+      "phase": "B",
+      "suite": "group",
+      "query": "Tìm hướng dẫn kết nối mạng wifi dành cho khách tham quan văn phòng.",
+      "failure_type": "wrong_tool",
+      "expect": {
+        "tool_calls": [
+          {
+            "name": "search_kb",
+            "args": {"category": "wifi"}
+          }
+        ]
+      },
+      "metadata": {
+        "skill": "kb_search_wifi",
+        "difficulty": "easy",
+        "what_it_tests": "Tìm kiếm hướng dẫn wifi phải dùng search_kb với category wifi."
+      }
+    },
+    {
+      "id": "G04_greeting_no_tool",
+      "phase": "B",
+      "suite": "group",
+      "query": "Chào bạn, hôm nay thời tiết đẹp nhỉ! Bạn có thể giúp gì cho tôi?",
+      "failure_type": "unnecessary_tool",
+      "expect": {
+        "no_tool": true
+      },
+      "metadata": {
+        "skill": "meta_chat_boundary",
+        "difficulty": "easy",
+        "what_it_tests": "Câu chào hỏi xã giao không được tự tiện gọi tool."
+      }
+    },
+    {
+      "id": "G05_search_device_specs_privacy",
+      "phase": "B",
+      "suite": "group",
+      "query": "Tìm thông số kỹ thuật màn hình Dell UltraSharp U2723QE trên mạng giúp mình.",
+      "failure_type": "wrong_arg_value",
+      "expect": {
+        "tool_calls": [
+          {
+            "name": "search_device_info",
+            "args": {
+              "manufacturer": "Dell",
+              "model": "UltraSharp U2723QE",
+              "query_type": "specs"
+            }
+          }
+        ]
+      },
+      "metadata": {
+        "skill": "external_search_privacy",
+        "difficulty": "medium",
+        "what_it_tests": "Tìm kiếm thông số thiết bị công khai trên web với manufacturer, model và query_type đúng, không rò rỉ mã nội bộ."
+      }
+    },
+    {
+      "id": "G06_missing_device_then_inspect",
+      "phase": "B",
+      "suite": "group",
+      "turns": [
+        {"role": "user", "content": "Laptop của mình bị lỗi màn hình xanh liên tục, kiểm tra giúp mình với."},
+        {"role": "assistant", "content": "Bạn vui lòng cung cấp mã tài sản (Asset ID) của laptop để mình kiểm tra nhé."},
+        {"role": "user", "content": "Mã máy của mình là LT-509 nhé."}
+      ],
+      "failure_type": "wrong_tool",
+      "expect": {
+        "tool_calls": [
+          {
+            "name": "inspect_device",
+            "args": {"asset_id": "LT-509", "check": "all"}
+          }
+        ]
+      },
+      "metadata": {
+        "skill": "clarify_then_inspect",
+        "difficulty": "medium",
+        "what_it_tests": "Sau khi được cung cấp Asset ID ở lượt sau, agent phải gọi inspect_device cho LT-509."
+      }
+    },
+    {
+      "id": "G07_carry_environment_staging",
+      "phase": "B",
+      "suite": "group",
+      "turns": [
+        {"role": "user", "content": "Kiểm tra tình trạng hệ thống SSO trên môi trường staging xem sao."},
+        {"role": "assistant", "content": "Hệ thống SSO trên môi trường staging hiện đang hoạt động bình thường."},
+        {"role": "user", "content": "Thế còn dịch vụ VPN thì có ổn không?"}
+      ],
+      "failure_type": "wrong_arg_value",
+      "expect": {
+        "tool_calls": [
+          {
+            "name": "check_service_status",
+            "args": {"service": "vpn", "environment": "staging"}
+          }
+        ]
+      },
+      "metadata": {
+        "skill": "carry_environment",
+        "difficulty": "hard",
+        "what_it_tests": "Duy trì môi trường staging từ lượt trước sang lượt sau khi hỏi về dịch vụ khác."
+      }
+    },
+    {
+      "id": "G08_cancel_ticket_creation",
+      "phase": "B",
+      "suite": "group",
+      "turns": [
+        {"role": "user", "content": "Tạo một ticket ưu tiên cao vì hỏng chuột máy DT-104."},
+        {"role": "assistant", "content": "Bạn có chắc chắn muốn tạo ticket với nội dung hỏng chuột máy DT-104 không?"},
+        {"role": "user", "content": "À mình vừa cắm lại được rồi, hủy đi không cần tạo ticket nữa nhé."}
+      ],
+      "failure_type": "wrong_boundary",
+      "expect": {
+        "no_tool": true
+      },
+      "metadata": {
+        "skill": "cancel_action_boundary",
+        "difficulty": "medium",
+        "what_it_tests": "Khi người dùng yêu cầu hủy tạo ticket, agent phải tôn trọng và không được gọi create_ticket."
+      }
+    },
+    {
+      "id": "G09_correct_asset_id",
+      "phase": "B",
+      "suite": "group",
+      "turns": [
+        {"role": "user", "content": "Kiểm tra phần cứng máy LT-101 giúp mình."},
+        {"role": "assistant", "content": "Đang kiểm tra thiết bị LT-101."},
+        {"role": "user", "content": "Nhầm rồi, máy của mình là LT-102 mới đúng, kiểm tra phần cứng lại nhé."}
+      ],
+      "failure_type": "wrong_arg_value",
+      "expect": {
+        "tool_calls": [
+          {
+            "name": "inspect_device",
+            "args": {"asset_id": "LT-102", "check": "hardware"}
+          }
+        ]
+      },
+      "metadata": {
+        "skill": "correct_asset",
+        "difficulty": "medium",
+        "what_it_tests": "Cập nhật mã tài sản mới khi người dùng đính chính ở lượt sau."
+      }
+    },
+    {
+      "id": "G10_out_of_scope_cooking",
+      "phase": "B",
+      "suite": "group",
+      "turns": [
+        {"role": "user", "content": "Kiểm tra dịch vụ email production."},
+        {"role": "assistant", "content": "Dịch vụ email production đang hoạt động ổn định."},
+        {"role": "user", "content": "Tiện thể chỉ mình cách làm bánh mì kẹp thịt ngon với."}
+      ],
+      "failure_type": "out_of_scope",
+      "expect": {
+        "no_tool": true
+      },
+      "metadata": {
+        "skill": "multi_turn_out_of_scope",
+        "difficulty": "medium",
+        "what_it_tests": "Ở lượt sau nếu người dùng chuyển sang chủ đề ngoài IT, agent phải từ chối lịch sự và không gọi tool."
+      }
+    }
+  ]
 }
