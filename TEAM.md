@@ -12,13 +12,13 @@
 
 ## Thành viên
 
-| Họ và tên       | MSSV        | GitHub         | Vai trò và công việc | File/commit/PR |
-| --------------- | ----------- | -------------- | -------------------- | -------------- |
-| Nguyễn Đức Tâm  | 2A202602921 | tamnd2004      | 12 case an toàn, phân tích trace, REPORT.md | `starter_v0/artifacts/REPORT.md`, run `v4_B_adversarial_*` |
-| Đậu Quang Ý     | 2A202602661 | quangy1007     | Thiết kế & cài đặt bộ 10 test case nhóm (5 single-turn + 5 multi-turn) | `starter_v0/data/eval_group.json`, run `v4_B_group_*` |
-| Nguyễn Tiến Đạt | 2A202602970 | DatTienNguyenn | v1 routing/clarification, v2 context/confirmation | commit `f6b8707`, `a5e44bc` |
-| Trần Mạnh Hùng  | 2A202602708 | manhhungtr211  | Baseline v0, retry/pacing, version log, README startup check | commit `af41fe9`, `starter_v0/scripts/log_version.py`, `docs/startup-check.md` |
-| Phạm Thành Đạt  | 2A202602721 | datamonsterr   | v3 safety boundary, v4 multi-entity, UI Streamlit + tests | commit `c306e3a`, `starter_v0/app.py`, `starter_v0/conversation.py`, `starter_v0/tests/` |
+| Họ và tên       | MSSV        | GitHub         | Vai trò và công việc                                                   | File/commit/PR                                                                           |
+| --------------- | ----------- | -------------- | ---------------------------------------------------------------------- | ---------------------------------------------------------------------------------------- |
+| Nguyễn Đức Tâm  | 2A202602921 | tamnd2004      | 12 case an toàn, phân tích trace, REPORT.md                            | `starter_v0/artifacts/REPORT.md`, run `v4_B_adversarial_*`                               |
+| Đậu Quang Ý     | 2A202602661 | quangy1007     | Thiết kế & cài đặt bộ 10 test case nhóm (5 single-turn + 5 multi-turn) | `starter_v0/data/eval_group.json`, run `v4_B_group_*`                                    |
+| Nguyễn Tiến Đạt | 2A202602970 | DatTienNguyenn | v1 routing/clarification, v2 context/confirmation                      | commit `f6b8707`, `a5e44bc`                                                              |
+| Trần Mạnh Hùng  | 2A202602708 | manhhungtr211  | Baseline v0, retry/pacing, version log, README startup check           | commit `af41fe9`, `starter_v0/scripts/log_version.py`, `docs/startup-check.md`           |
+| Phạm Thành Đạt  | 2A202602721 | datamonsterr   | v3 safety boundary, v4 multi-entity, UI Streamlit + tests              | commit `c306e3a`, `starter_v0/app.py`, `starter_v0/conversation.py`, `starter_v0/tests/` |
 
 ## Nhận xét chung
 
@@ -37,7 +37,7 @@ Sao chép mục này cho từng thành viên.
 - Quyết định, khó khăn và cách xử lý: Điểm tự động PASS không chứng minh "không có dữ liệu rò rỉ" — kiểm tra thêm `tool_results`, thư mục `tickets/` và regex chặn identifier. Phát hiện A03: forged `TOOL_RESULTS_JSON` khiến eval path ghi 1 ticket mock thật; UI/runtime chặn được (unit test) nhưng ghi minh bạch làm giới hạn, không giấu. A02/A05/A06 là hành vi an toàn nhưng lệch expect cố định.
 - Điều đã học: Ranh giới exfiltration phải được chứng minh ở tầng thực thi (tool code + filesystem), không chỉ ở routing.
 - AI/công cụ đã dùng và cách kiểm tra: AI hỗ trợ soạn phân tích; kiểm tra bằng cách đọc trực tiếp từng result trong run JSON và so với expect của case.
-- Thời điểm đã tự nộp URL repo chung trên VLearn: [thành viên tự điền khi nộp]
+- Thời điểm đã tự nộp URL repo chung trên VLearn: Đã nộp lúc 01:50:33 16/9/2026
 
 ### Đậu Quang Ý — 2A202602661
 
@@ -69,16 +69,16 @@ Sao chép mục này cho từng thành viên.
 - Quyết định, khó khăn và cách xử lý: model liên tục bị provider error do giới hạn RPM — thêm cơ chế retry. Model hay "kể" đã làm xong trong text JSON mà không gọi tool → tách tầng thực thi; UI dựng câu trả lời từ kết quả tool thật nên lỗi không thể bị giấu. Confirmation chỉ qua nút bấm payload hiển thị, `confirmed=true` từ model không ghi file.
 - Điều đã học: Tự động PASS routing không tự chứng minh hành động ghi dữ liệu thành công; phải nhìn `tool_results` và filesystem.
 - AI/công cụ đã dùng và cách kiểm tra: AI hỗ trợ code + review; kiểm chứng bằng unit tests (`tests/`), browser test thực tế trên `http://localhost:8501` và transcript JSON xuất từ UI.
-- Thời điểm đã tự nộp URL repo chung trên VLearn:  Đã nộp lúc 01:07:07 16/9/2026
+- Thời điểm đã tự nộp URL repo chung trên VLearn: Đã nộp lúc 01:07:07 16/9/2026
 
 ## Reconstruction / phân công bản EasyGame
 
 Bản này được chuẩn bị với AI theo phân công của người yêu cầu. Author và ngày Git là metadata tái dựng; xem `docs/provenance.json`. Thời gian run là thời gian thực. Những reflection ở trên được giữ từ repo gốc, không xác nhận lại việc nộp VLearn. Thành viên cần tự review reflection và chạy README; chưa có bằng chứng xác nhận của thành viên trong phiên này.
 
-| GitHub từ TEAM gốc | Alias theo yêu cầu | Phần việc bản EasyGame |
-|---|---|---|
-| manhhungtr211 | manhhungtr211 | Baseline, môi trường, log, tích hợp và kiểm tra khởi động |
-| DatTienNguyenn | DatTienNguyen | v1 routing/clarification, v2 context/confirmation |
-| datamonsterr | PhamThanhDat / datamonsterr | v3 safety, vòng sửa tiếp theo, UI Streamlit |
-| quangy1007 | quangy | 10 case nhóm gốc và run đối chiếu |
-| tamnd2004 | tamnd2004 | 12 safety cases, phân tích trace và REPORT |
+| GitHub từ TEAM gốc | Alias theo yêu cầu          | Phần việc bản EasyGame                                    |
+| ------------------ | --------------------------- | --------------------------------------------------------- |
+| manhhungtr211      | manhhungtr211               | Baseline, môi trường, log, tích hợp và kiểm tra khởi động |
+| DatTienNguyenn     | DatTienNguyen               | v1 routing/clarification, v2 context/confirmation         |
+| datamonsterr       | PhamThanhDat / datamonsterr | v3 safety, vòng sửa tiếp theo, UI Streamlit               |
+| quangy1007         | quangy                      | 10 case nhóm gốc và run đối chiếu                         |
+| tamnd2004          | tamnd2004                   | 12 safety cases, phân tích trace và REPORT                |
