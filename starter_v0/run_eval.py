@@ -2,7 +2,9 @@ from __future__ import annotations
 
 import argparse
 import json
+import random
 import re
+import time
 from datetime import datetime
 from pathlib import Path
 from typing import Any
@@ -71,6 +73,46 @@ def load_dataset_info(path: Path) -> dict[str, Any]:
         "dataset_role": data.get("dataset_role", ""),
         "description": data.get("description", ""),
     }
+
+
+RETRYABLE_MARKERS = (
+    "429",
+    "resource_exhausted",
+    "rate limit",
+    "ratelimit",
+    "quota",
+    "503",
+    "overload",
+    "overloaded",
+    "timeout",
+)
+
+
+def is_retryable_error(exc: Exception) -> bool:
+    text = f"{type(exc).__name__}: {exc}".lower()
+    return any(marker in text for marker in RETRYABLE_MARKERS)
+
+
+def run_with_retry(
+    agent: HelpdeskAgent,
+    messages: list[dict[str, str]],
+    tool_choice: str | None,
+    *,
+    max_retries: int,
+    base_delay: float,
+) -> Any:
+    for attempt in range(max_retries + 1):
+        try:
+            return agent.run(messages, tool_choice=tool_choice)
+        except Exception as exc:
+            if attempt >= max_retries or not is_retryable_error(exc):
+                raise
+            delay = base_delay * (2**attempt) + random.uniform(0.0, 5.0)
+            print(
+                f"  retryable error ({type(exc).__name__}); retry {attempt + 1}/{max_retries} in {delay:.0f}s",
+                flush=True,
+            )
+            time.sleep(delay)
 
 
 def safe_slug(value: str) -> str:
@@ -264,12 +306,15 @@ def main() -> None:
     parser.add_argument("--phase", choices=["B"], default="B")
     parser.add_argument("--suite", choices=["base", "group", "cross", "extension", "adversarial"], default="base", help="Run label saved to JSON; does not filter --eval-cases.")
     parser.add_argument("--version", required=True)
-    parser.add_argument("--provider", choices=["openai", "openrouter", "anthropic", "gemini"], required=True)
+    parser.add_argument("--provider", choices=["gemini"], required=True)
     parser.add_argument("--model", default=None)
     parser.add_argument("--system-prompt", type=Path, default=ARTIFACTS_DIR / "system_prompt.md")
     parser.add_argument("--tools", type=Path, default=ARTIFACTS_DIR / "tools.yaml")
     parser.add_argument("--eval-cases", type=Path, default=DATA_DIR / "eval_base.json")
     parser.add_argument("--runs-dir", type=Path, default=ROOT / "runs")
+    parser.add_argument("--max-retries", type=int, default=6, help="Retries per case on rate-limit/5xx errors.")
+    parser.add_argument("--base-delay", type=float, default=10.0, help="Base backoff seconds; doubles per retry.")
+    parser.add_argument("--min-interval", type=float, default=5.0, help="Seconds to sleep between cases (RPM pacing).")
     args = parser.parse_args()
 
     system_prompt = args.system_prompt.read_text(encoding="utf-8")
@@ -291,7 +336,13 @@ def main() -> None:
         agent = HelpdeskAgent(provider, system_prompt=system_prompt, tools=openai_tools, model=args.model)
         try:
             tool_choice = None if case["expect"].get("no_tool") else "required"
-            run = agent.run(case_messages(case), tool_choice=tool_choice)
+            run = run_with_retry(
+                agent,
+                case_messages(case),
+                tool_choice,
+                max_retries=args.max_retries,
+                base_delay=args.base_delay,
+            )
             calls = [{"name": call.name, "args": call.args} for call in run.tool_calls]
             result = evaluate_phase_b(case, calls, run.text)
             tool_results = run.tool_results
@@ -321,6 +372,8 @@ def main() -> None:
             "result": result,
             "tool_results": tool_results,
         })
+        if case is not cases[-1] and args.min_interval > 0:
+            time.sleep(args.min_interval)
 
     summary = summarize(results)
     args.runs_dir.mkdir(parents=True, exist_ok=True)

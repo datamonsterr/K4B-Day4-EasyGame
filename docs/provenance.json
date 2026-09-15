@@ -1,0 +1,11 @@
+{
+  "actual_session_started_at": "2026-09-15T23:17:49.307945+07:00",
+  "reconstructed_timeline_start": "2026-09-15T18:47:49.307921+07:00",
+  "notice": "Commit dates and member attribution reconstructed at requester direction; evidence timestamps are actual. AI-assisted implementation; individual attendance, reviews and submissions are not asserted.",
+  "source_repository": "K4B-Day-4-Whatever",
+  "source_head": "b88bcbc25b0c5910ff894beedf3a4ca425318c35",
+  "fixed_datasets": {
+    "eval_base.json": "8d9b4180a2d3715fd1351efb4990af20e0b149d40e6155510f2605fecb2ec3ed",
+    "eval_adversarial.json": "f433fd8697075d9c5534a4a60a58c32c3d9c7b6f6080a7fc63aa59dcc3bec718"
+  }
+}
