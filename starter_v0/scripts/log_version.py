@@ -23,7 +23,7 @@ def main():
     run_file = args.run.resolve().relative_to(ROOT).as_posix()
     if any(row["run_file"] == run_file for row in rows):
         raise SystemExit("Run already logged")
-    previous = next((row for row in reversed(rows) if row["metric_name"] == "case_accuracy"), None)
+    previous = next((row for row in reversed(rows) if row["metric_name"] == "case_accuracy" and row["reason"].startswith(f"suite={run['suite']};")), None)
     summary = run["summary"]
     valid = summary["provider_error_cases"] == 0 and summary["measured_cases"] == summary["total_cases"]
     row = dict(version=run["version"], author=args.author, changed_artifact=args.change,
