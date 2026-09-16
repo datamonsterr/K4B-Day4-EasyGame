@@ -61,7 +61,7 @@ Sao chép mục này cho từng thành viên.
 - Quyết định, khó khăn và cách xử lý: Quota 15 RPM free tier phá run đầu; xử lý bằng min-interval 5s + exponential backoff, không đổi scorer. Run hỏng được giữ nguyên và đánh dấu `INVALID_partial_case_accuracy` trong `version_log.csv`.
 - Điều đã học: Run chỉ là bằng chứng khi `provider_error_cases == 0`; log phải giữ cả run thất bại.
 - AI/công cụ đã dùng và cách kiểm tra: AI hỗ trợ viết harness; kiểm tra bằng chạy lại preflight + eval đầy đủ, đối chiếu summary JSON.
-- Thời điểm đã tự nộp URL repo chung trên VLearn: [thành viên tự điền khi nộp]
+- Thời điểm đã tự nộp URL repo chung trên VLearn: Đã nộp lúc 09:51:15 16/9/2026
 
 ### Phạm Thành Đạt — 2A202602721
 
